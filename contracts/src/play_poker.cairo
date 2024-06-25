@@ -1,5 +1,7 @@
 #[starknet::contract]
 pub(crate) mod PlayPoker {
+    use core::option::OptionTrait;
+    use core::result::ResultTrait;
     use core::box::BoxTrait;
     use core::array::ArrayTrait;
     use core::serde::Serde;
@@ -24,11 +26,8 @@ pub(crate) mod PlayPoker {
     };
     use core::poseidon::PoseidonTrait;
     use core::hash::{HashStateTrait, HashStateExTrait};
-    use starkdeck_contracts::models::{GamePhase, Player, Hand, DeckCard, Block};
-    use starkdeck_contracts::impls::{
-        StoreFelt252Array, PartialOrdFelt, ListHoleCardsCopy, ListCommunityCardsCopy,
-        ArrayFelt252Copy
-    };
+    use starkdeck_contracts::models::{GamePhase, Player, Hand, DeckCard, Block, HoleCards};
+    use starkdeck_contracts::impls::{StoreFelt252Array, PartialOrdFelt};
     use starkdeck_contracts::constants::{NUM_CARDS, NUM_PLAYERS, NUM_BOARD_CARDS};
     use starkdeck_contracts::interface::{IPlayPoker};
 
@@ -138,10 +137,10 @@ pub(crate) mod PlayPoker {
             let mut deck: Array<felt252> = array![];
             let mut suite: u8 = 0;
             let mut rank: u8 = 0;
-            let mut index: u8 = 0;
+            let mut index: u32 = 0;
             while suite < 4 {
                 while rank < 13 {
-                    let deck_card = DeckCard { suite, rank, index };
+                    let deck_card = DeckCard { suite, rank, index: index.try_into().unwrap() };
                     let hash = PoseidonTrait::new().update_with(deck_card).finalize();
                     deck.append(hash);
                     rank += 1;
@@ -153,29 +152,24 @@ pub(crate) mod PlayPoker {
 
             index = 0;
             let mut shuffled_deck_dict: Felt252Dict<felt252> = Default::default();
-            while index
-                .try_into()
-                .unwrap() < NUM_CARDS {
-                    let block_timestamp = get_block_timestamp();
-                    let block_number = get_block_number();
-                    let block = Block { block_timestamp, block_number };
-                    let hash = PoseidonTrait::new().update_with(block).finalize();
-                    let swap_pos: u256 = hash
-                        .into() % (NUM_CARDS - index.try_into().unwrap())
-                        .into();
-                    let temp = *deck[swap_pos.try_into().unwrap()];
-                    shuffled_deck_dict.insert(index.into(), temp);
-                    index += 1;
-                };
+            while index < NUM_CARDS {
+                let block_timestamp = get_block_timestamp();
+                let block_number = get_block_number();
+                let block = Block { block_timestamp, block_number };
+                let hash = PoseidonTrait::new().update_with(block).finalize();
+                let swap_pos: u256 = hash.into() % (NUM_CARDS - index).into();
+                let temp = *deck[swap_pos.try_into().unwrap()];
+                shuffled_deck_dict.insert(index.into(), temp);
+                index += 1;
+            };
 
             let mut shuffled_deck: Array<felt252> = array![];
 
             index = 0;
-            while index
-                .try_into()
-                .unwrap() < NUM_CARDS {
-                    shuffled_deck.append(shuffled_deck_dict.get(index.into()));
-                };
+            while index < NUM_CARDS {
+                shuffled_deck.append(shuffled_deck_dict.get(index.into()));
+                index += 1;
+            };
             self.shuffled_deck.write(shuffled_deck);
             self.emit(Shuffled {});
         }
@@ -184,8 +178,8 @@ pub(crate) mod PlayPoker {
             let total_players = self.total_players.read();
             assert!(total_players >= 2, "Minimum 2 players required to start the game");
             let mut deck_index = 0;
-            let mut current_hand = self.current_hand.read();
-            let shuffled_deck = self.shuffled_deck.read();
+            let mut current_hand = @self.current_hand.read();
+            let shuffled_deck = @self.shuffled_deck.read();
             let mut i = 0;
             let mut j = 0;
             while i < 2 {
@@ -197,7 +191,7 @@ pub(crate) mod PlayPoker {
                             .hole_cards
                             .get(j.try_into().unwrap())
                             .unwrap()
-                            .unwrap();
+                            .unwrap_or(HoleCards { card1: 0, card2: 0 });
                         if i == 0 {
                             hole_cards
                                 .card1 =
@@ -221,7 +215,9 @@ pub(crate) mod PlayPoker {
                         };
                         deck_index += 1;
                     };
+                    j += 1;
                 };
+                i += 1;
             };
 
             self.current_phase.write(GamePhase::FLOP(FLOP {}));

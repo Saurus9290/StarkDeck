@@ -5,11 +5,6 @@ use starkdeck_contracts::models::{HoleCards, CommunityCards};
 use alexandria_storage::list::{List, ListTrait};
 
 
-pub impl ListHoleCardsCopy of Copy<List<HoleCards>> {}
-pub impl ListCommunityCardsCopy of Copy<List<CommunityCards>> {}
-pub impl ArrayFelt252Copy of Copy<Array<felt252>> {}
-
-
 pub impl StoreHoleCardsArray of Store<Array<HoleCards>> {
     fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<Array<HoleCards>> {
         StoreHoleCardsArray::read_at_offset(address_domain, base, 0)

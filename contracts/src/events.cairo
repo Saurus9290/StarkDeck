@@ -22,6 +22,14 @@ pub mod game_events {
     #[derive(Drop, PartialEq, starknet::Event)]
     pub struct GameStarted {}
 
+
+    #[derive(Drop, PartialEq, starknet::Event)]
+    pub struct DeckCreated {}
+
+
+    #[derive(Drop, PartialEq, starknet::Event)]
+    pub struct ShuffleDeckDictCreated {}
+
     #[derive(Drop, PartialEq, starknet::Event)]
     pub struct PlayerLeft {
         #[key]
