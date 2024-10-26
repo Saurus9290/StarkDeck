@@ -1,0 +1,90 @@
+import "hashes/sha256/512bitPacked" as sha256;
+
+def countOccurrences(field[7] array, field value) -> field {
+    field mut count = 0;
+    for u32 i in 0..7 {
+        count = count + (array[i] == value ? 1 : 0);
+    }
+    return count;
+}
+
+def evaluateHand(field[7] ranks, field[7] suits) -> field {
+    // Simplified hand evaluation logic
+    // Check for flush
+    bool mut isFlush = false;
+    for u32 i in 0..4 {
+        field suitIndex = suits[i];
+        field count = countOccurrences(suits, suitIndex);
+        isFlush = count >= 5 ? true : isFlush;
+    }
+    // Check for straight
+    bool mut isStraight = false;
+    for u32 i in 0..3 {
+        //field rankIndex = ranks[i];
+        bool temp = countOccurrences(ranks, ranks[i]) > 0 &&
+                    countOccurrences(ranks, ranks[i + 1]) > 0 &&
+                    countOccurrences(ranks, ranks[i + 2]) > 0 &&
+                    countOccurrences(ranks, ranks[i + 3]) > 0 &&
+                    countOccurrences(ranks, ranks[i + 4]) > 0;
+        isStraight = temp ? true : isStraight;
+    }
+    // Check for A-2-3-4-5 straight
+    bool temp = countOccurrences(ranks, ranks[0]) > 0 &&
+                countOccurrences(ranks, ranks[1]) > 0 &&
+                countOccurrences(ranks, ranks[2]) > 0 &&
+                countOccurrences(ranks, ranks[3]) > 0 &&
+                countOccurrences(ranks, ranks[6]) > 0;
+    isStraight = temp ? true : isStraight;
+    
+    // Check for other hands
+    field mut pairs = 0;
+    field mut three_of_a_kind = 0;
+    field mut four_of_a_kind = 0;
+
+    for u32 i in 0..7 {
+        field rankIndex = ranks[i];
+        field count = countOccurrences(ranks, rankIndex);
+        pairs = pairs + (count == 2 ? 1 : 0);
+        three_of_a_kind = three_of_a_kind + (count == 3 ? 1 : 0);
+        four_of_a_kind = four_of_a_kind + (count == 4 ? 1 : 0);
+    }
+
+    return isStraight && isFlush ? 8 :
+           four_of_a_kind > 0 ? 7 :
+           three_of_a_kind > 0 && pairs > 0 ? 6 :
+           isFlush ? 5 :
+           isStraight ? 4 :
+           three_of_a_kind > 0 ? 3 :
+           pairs >= 2 ? 2 :
+           pairs == 1 ? 1 : 0;
+}
+
+def main (
+    field holeRank1,
+    field holeSuit1,
+    field holeRank2,
+    field holeSuit2,
+    field[5] boardRanks,
+    field[5] boardSuits,
+    field[2] holeCardHash0,
+    field[2] holeCardHash1
+) -> field {
+    field[7] ranks = [holeRank1, holeRank2, boardRanks[0], boardRanks[1], boardRanks[2], boardRanks[3], boardRanks[4]];
+    field[7] suits = [holeSuit1, holeSuit2, boardSuits[0], boardSuits[1], boardSuits[2], boardSuits[3], boardSuits[4]];
+
+    field[4] input0 = [holeRank1, holeSuit1, 0, 0];
+    field[4] input1 = [holeRank2, holeSuit2, 0, 0];
+
+    field[2] hash0 = sha256(input0);
+    field[2] hash1 = sha256(input1);
+
+    /*bool validHashes = (hash0[0] == holeCardHashes[0] && hash0[1] == holeCardHashes[1]) &&
+                       (hash1[0] == holeCardHashes[0] && hash1[1] == holeCardHashes[1]);*/
+
+    bool validHashes = (hash0[0] == holeCardHash0[0] && hash0[1] == holeCardHash0[1]) &&
+                       (hash1[0] == holeCardHash1[0] && hash1[1] == holeCardHash1[1]);
+
+    field handStrength = evaluateHand(ranks, suits);
+
+    return validHashes ? handStrength : 0;
+}

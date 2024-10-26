@@ -1,0 +1,6 @@
+[submodule "kakarot/playpoker/lib/forge-std"]
+	path = kakarot/playpoker/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "kakarot/playpoker/lib/openzeppelin-contracts"]
+	path = kakarot/playpoker/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

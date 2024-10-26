@@ -1,0 +1,63 @@
+{
+  "inputs": [
+    {
+      "name": "holeRank1",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "holeSuit1",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "holeRank2",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "holeSuit2",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "boardRanks",
+      "public": true,
+      "type": "array",
+      "components": {
+        "size": 5,
+        "type": "field"
+      }
+    },
+    {
+      "name": "boardSuits",
+      "public": true,
+      "type": "array",
+      "components": {
+        "size": 5,
+        "type": "field"
+      }
+    },
+    {
+      "name": "holeCardHash0",
+      "public": true,
+      "type": "array",
+      "components": {
+        "size": 2,
+        "type": "field"
+      }
+    },
+    {
+      "name": "holeCardHash1",
+      "public": true,
+      "type": "array",
+      "components": {
+        "size": 2,
+        "type": "field"
+      }
+    }
+  ],
+  "output": {
+    "type": "field"
+  }
+}

@@ -1,0 +1,12 @@
+# ZoKrates output files
+kakarot/zkproof/out
+kakarot/zkproof/out.r1cs
+kakarot/zkproof/out.wtns
+kakarot/zkproof/witness
+
+# ZoKrates keys
+kakarot/zkproof/proving.key
+kakarot/zkproof/verification.key
+
+# ZoKrates proof
+kakarot/zkproof/proof.json
