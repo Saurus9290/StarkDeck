@@ -52,9 +52,7 @@ StarkDeck revolutionizes online poker by combining traditional gameplay with blo
 - Secure API endpoints
 
 ### Smart Contracts (Cairo)
-```cairo
 
-```
 
 ### StarkNet Integration
 - Decentralized contract deployment
