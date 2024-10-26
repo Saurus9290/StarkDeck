@@ -1,4 +1,4 @@
-# StarkDeck 🎮 ( Nethermind - Build Starknet.anything bounty in Encode Hackaton)
+# StarkDeck 🎮 (Nethermind - Build Starknet.anything bounty in Encode London Hackaton)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Built with Cairo](https://img.shields.io/badge/Built%20with-Cairo-blue.svg)](https://www.cairo-lang.org/)
