@@ -5,9 +5,6 @@
 [![Built on StarkNet](https://img.shields.io/badge/Built%20on-StarkNet-purple.svg)](https://starknet.io/)
 [![Made with Next.js](https://img.shields.io/badge/Made%20with-Next.js-000000.svg)](https://nextjs.org/)
 
-## Live Demo
-[View the deployed project on Vercel](https://stark-deck.vercel.app/)
-
 
 ## A decentralized poker platform built on StarkNet, offering secure and anonymous gameplay through blockchain technology.
 
