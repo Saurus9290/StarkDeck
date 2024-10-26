@@ -7,18 +7,6 @@
 
 > A decentralized poker platform built on StarkNet, offering secure and anonymous gameplay through blockchain technology.
 
-![StarkDeck Banner](https://via.placeholder.com/800x200?text=StarkDeck+Banner)
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Overview
 
@@ -65,70 +53,11 @@ StarkDeck revolutionizes online poker by combining traditional gameplay with blo
 
 ### Smart Contracts (Cairo)
 ```cairo
-// Example Smart Contract Structure
-#[contract]
-mod StarkDeck {
-    // Contract implementation
-}
+
 ```
 
 ### StarkNet Integration
 - Decentralized contract deployment
 - Secure transaction processing
 - Zero-knowledge proof implementation
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js >= 14.0.0
-- Yarn or npm
-- StarkNet wallet
-- Cairo compiler
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/starkdeck.git
-
-# Install dependencies
-cd starkdeck
-yarn install
-
-# Configure environment
-cp .env.example .env
-
-# Start development server
-yarn dev
-```
-
-## 🎮 Usage
-
-### Quick Start Guide
-
-1. **Connect Wallet**
-   ```javascript
-   await starkDeck.connect();
-   ```
-
-2. **Create Table**
-   ```javascript
-   const table = await starkDeck.createTable({
-     blinds: [10, 20],
-     maxPlayers: 9
-   });
-   ```
-
-3. **Join Game**
-   ```javascript
-   await table.join(seatIndex);
-   ```
-
-### Game Formats
-
-| Format | Description | Duration |
-|--------|-------------|----------|
-| Ring Games | Flexible entry/exit | Unlimited |
-| Tournaments | Multi-table competition | 2-6 hours |
-| Sit & Go's | Single table tourneys | 30-60 mins |
 
