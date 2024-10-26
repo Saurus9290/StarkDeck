@@ -8,7 +8,8 @@
 ## Live Demo
 [View the deployed project on Vercel](https://stark-deck.vercel.app/)
 
-> A decentralized poker platform built on StarkNet, offering secure and anonymous gameplay through blockchain technology.
+
+## A decentralized poker platform built on StarkNet, offering secure and anonymous gameplay through blockchain technology.
 
 
 ## Overview
